@@ -1,1381 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fundación Ejército de los Andes</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-<style>
-
-/* ─── RESET ──────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-img, video { display: block; max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-ul { list-style: none; }
-
-/* ─── TOKENS — Paleta Opción A ───────────────────
-   Azul marino profundo → fondo hero / nav / footer
-   Celeste              → acento principal / links / etiquetas
-   Rojo                 → SOLO botón Donar y alertas
-   Verde                → SOLO eje Medio Ambiente
-   Blanco crema         → texto sobre fondos oscuros
-   Gris claro           → fondo secciones de texto
-─────────────────────────────────────────────────── */
-:root {
-  /* Azules */
-  --marino:       #0a0f1e;   /* fondo hero, nav, footer */
-  --marino-med:   #0d1b3e;   /* fondo secciones oscuras */
-  --marino-claro: #1a3a6b;   /* gradientes, hover oscuro */
-  --celeste:      #2d7dd2;   /* acento principal */
-  --celeste-vivo: #4a9eff;   /* hover del celeste */
-  --celeste-dim:  rgba(45,125,210,0.15); /* fondos celeste suave */
-
-  /* Acción */
-  --rojo:         #c1121f;   /* SOLO donar / alertas */
-  --rojo-hover:   #e01b2a;
-
-  /* Verde — solo Medio Ambiente */
-  --verde:        #2d6a4f;
-  --verde-vivo:   #40916c;
-
-  /* Neutros */
-  --ink:          #07090f;   /* negro profundo */
-  --gris-seccion: #f4f3ef;   /* fondo secciones claras */
-  --gris-borde:   #e0ddd6;
-  --texto-medio:  #4a5568;   /* párrafos sobre fondo claro */
-  --blanco:       #f4f2ee;   /* texto sobre fondo oscuro */
-  --blanco-puro:  #ffffff;
-
-  --ff-title: 'Syne', sans-serif;
-  --ff-mono:  'Syne Mono', monospace;
-  --ff-serif: 'Libre Baskerville', serif;
-  --ease:     cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* ─── BASE ──────────────────────────────────── */
-html { scroll-behavior: smooth; }
-body {
-  background: var(--marino);
-  color: var(--blanco);
-  font-family: var(--ff-title);
-  line-height: 1.5;
-  overflow-x: hidden;
-}
-
-/* ─── NAV ───────────────────────────────────────
-   Fijo en la parte superior.
-   .is-scrolled → fondo marino sólido al scrollear.
-─────────────────────────────────────────────────── */
-.nav {
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 2.5rem;
-  transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
-  border-bottom: 1px solid transparent;
-}
-.nav.is-scrolled {
-  background: rgba(10,15,30,0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-color: rgba(45,125,210,0.2);
-}
-.nav-logo {
-  font-family: var(--ff-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--blanco);
-  line-height: 1.4;
-}
-.nav-logo em { font-style: normal; color: var(--celeste-vivo); }
-.nav-links { display: flex; gap: 2rem; align-items: center; }
-.nav-links a {
-  font-family: var(--ff-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(244,242,238,0.55);
-  transition: color 0.25s;
-}
-.nav-links a:hover { color: var(--blanco); }
-
-/* Botón Donar — rojo, pill */
-.nav-donar {
-  background: var(--rojo) !important;
-  color: var(--blanco-puro) !important;
-  border-radius: 999px;
-  padding: 0.5rem 1.3rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
-  transition: background 0.25s !important;
-}
-.nav-donar:hover { background: var(--rojo-hover) !important; }
-
-
-/* ─── HERO ───────────────────────────────────────
-   Video de dron de fondo a pantalla completa.
-   Capas:
-   1. <video>       → video de dron
-   2. .hero-overlay → degradado marino encima del video
-   3. contenido     → texto y botones (z-index alto)
-─────────────────────────────────────────────────── */
-.hero {
-  min-height: 100dvh;
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr auto;
-  padding: 8rem 2.5rem 4rem;
-  overflow: hidden;
-}
-
-/* Video/iframe de fondo del hero
-   Truco para cubrir toda la pantalla con iframe de YouTube
-   (YouTube no soporta object-fit, así que usamos width/height
-   sobredimensionados y centramos con transform)
-*/
-.hero-video {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 56.25vw;    /* 16:9 → altura = ancho × 9/16 */
-  min-height: 100vh;
-  min-width: 177.78vh; /* 16:9 → ancho = alto × 16/9 */
-  z-index: 0;
-  pointer-events: none;
-  border: none;
-}
-
-/* Capa de oscurecimiento sobre el video:
-   - Marino fuerte a la izquierda (donde va el texto)
-   - Degradado hacia arriba muy oscuro (legibilidad nav)
-   - Degradado hacia abajo oscuro (legibilidad botones)
-*/
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(to right,
-      rgba(10,15,30,0.92) 0%,
-      rgba(10,15,30,0.65) 45%,
-      rgba(10,15,30,0.25) 100%
-    ),
-    linear-gradient(to top,
-      rgba(10,15,30,0.9) 0%,
-      transparent 40%
-    ),
-    linear-gradient(to bottom,
-      rgba(10,15,30,0.6) 0%,
-      transparent 20%
-    );
-}
-
-/* Línea vertical decorativa entre las 2 columnas */
-.hero::after {
-  content: '';
-  position: absolute;
-  top: 12%; bottom: 12%;
-  left: 50%;
-  width: 1px;
-  z-index: 2;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(45,125,210,0.2) 30%,
-    rgba(45,125,210,0.2) 70%,
-    transparent
-  );
-}
-
-/* Todo el contenido va sobre las capas (z-index ≥ 2) */
-.hero-eyebrow,
-.hero-title,
-.hero-foot,
-.hero-deco,
-.hero-scroll { position: relative; z-index: 2; }
-
-/* Etiqueta pequeña sobre el título */
-.hero-eyebrow {
-  grid-column: 1; grid-row: 1;
-  font-family: var(--ff-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--celeste-vivo);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  transform: translateY(12px);
-  animation: rise 0.7s 0.1s var(--ease) forwards;
-}
-.hero-eyebrow::before {
-  content: '';
-  width: 2rem; height: 1px;
-  background: var(--celeste-vivo);
-}
-
-/* Título principal */
-.hero-title {
-  grid-column: 1; grid-row: 2;
-  align-self: center;
-  font-family: var(--ff-title);
-  font-size: clamp(3.2rem, 6vw, 5.8rem);
-  font-weight: 800;
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  color: var(--blanco-puro);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: rise 0.8s 0.25s var(--ease) forwards;
-}
-/* Líneas con texto en contorno (outline) celeste */
-.hero-title .outline {
-  -webkit-text-stroke: 1.5px var(--celeste);
-  color: transparent;
-  display: block;
-}
-.hero-title .small {
-  font-size: clamp(1.2rem, 2vw, 1.8rem);
-  font-weight: 400;
-  color: rgba(244,242,238,0.45);
-  letter-spacing: 0.06em;
-  display: block;
-  margin-top: 0.6rem;
-  -webkit-text-stroke: 0;
-}
-
-/* Descripción y botones del hero */
-.hero-foot {
-  grid-column: 1; grid-row: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: 480px;
-  padding-top: 2.5rem;
-  opacity: 0;
-  transform: translateY(16px);
-  animation: rise 0.8s 0.45s var(--ease) forwards;
-}
-.hero-desc {
-  font-size: 0.95rem;
-  line-height: 1.8;
-  color: rgba(244,242,238,0.6);
-  font-weight: 400;
-  max-width: 52ch;
-}
-.hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-
-/* Bloque derecho: año decorativo + estadísticas */
-.hero-deco {
-  grid-column: 2; grid-row: 1 / 4;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  padding-left: 3rem;
-  gap: 2.5rem;
-  opacity: 0;
-  animation: rise 1s 0.55s var(--ease) forwards;
-}
-.hero-deco-year {
-  font-family: var(--ff-mono);
-  font-size: clamp(7rem, 14vw, 13rem);
-  color: rgba(45,125,210,0.08);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  user-select: none;
-}
-.hero-stats { display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-end; }
-.hero-stat {
-  text-align: right;
-  border-right: 2px solid var(--celeste);
-  padding-right: 1.25rem;
-}
-.hero-stat-num {
-  font-family: var(--ff-mono);
-  font-size: 2.2rem;
-  color: var(--blanco-puro);
-  line-height: 1;
-  display: block;
-}
-.hero-stat-label {
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(244,242,238,0.4);
-  display: block;
-  margin-top: 0.3rem;
-}
-
-/* Indicador de scroll */
-.hero-scroll {
-  position: absolute;
-  bottom: 2rem; left: 2.5rem;
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(244,242,238,0.3);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  opacity: 0;
-  animation: rise 0.8s 0.9s var(--ease) forwards;
-}
-.hero-scroll::before {
-  content: '';
-  display: block;
-  width: 1px; height: 2.5rem;
-  background: linear-gradient(to bottom, rgba(45,125,210,0.6), transparent);
-  animation: pulse 2s 1.5s infinite;
-}
-
-
-/* ─── TICKER ─────────────────────────────────────
-   Franja animada entre hero y resto de la página.
-   Fondo marino claro, texto celeste/blanco.
-─────────────────────────────────────────────────── */
-.ticker {
-  overflow: hidden;
-  white-space: nowrap;
-  background: var(--marino-med);
-  border-top: 1px solid rgba(45,125,210,0.2);
-  border-bottom: 1px solid rgba(45,125,210,0.2);
-  padding: 0.85rem 0;
-}
-.ticker-track {
-  display: inline-flex;
-  animation: ticker 32s linear infinite;
-}
-.ticker-item {
-  font-family: var(--ff-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(244,242,238,0.35);
-  padding: 0 2rem;
-}
-.ticker-item span { color: var(--celeste-vivo); }
-
-
-/* ─── QUIÉNES SOMOS ──────────────────────────────
-   Split: imagen izquierda / texto derecha
-   Fondo: sección clara (gris cálido) para contraste
-   con el hero oscuro que la precede.
-─────────────────────────────────────────────────── */
-.sobre {
-  display: grid;
-  grid-template-columns: 55fr 45fr;
-  min-height: 75vh;
-}
-
-/* Columna visual — reemplazar fondo con foto real */
-.sobre-visual {
-  position: relative;
-  overflow: hidden;
-  min-height: 500px;
-  background: var(--marino-med);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /*
-    PARA FOTO DEL EQUIPO:
-    background: url('assets/img/equipo.jpg') center/cover no-repeat;
-    Y eliminar .sobre-visual-inner y .sobre-bg-text
-  */
-}
-.sobre-bg-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--ff-title);
-  font-size: 20vw;
-  font-weight: 800;
-  color: rgba(45,125,210,0.05);
-  letter-spacing: -0.04em;
-  user-select: none;
-  overflow: hidden;
-}
-/* Tag flotante sobre la imagen */
-.sobre-tag {
-  position: absolute;
-  bottom: 2rem; left: 2rem;
-  font-family: var(--ff-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--celeste-vivo);
-  border: 1px solid rgba(45,125,210,0.4);
-  padding: 0.45rem 1rem;
-  background: rgba(10,15,30,0.6);
-}
-
-/* Columna de texto */
-.sobre-texto {
-  background: var(--gris-seccion);
-  padding: 5rem 3.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.75rem;
-}
-.sobre-cita {
-  font-family: var(--ff-serif);
-  font-size: 1.25rem;
-  font-style: italic;
-  line-height: 1.7;
-  color: var(--marino-claro);
-  padding-left: 1.25rem;
-  border-left: 2px solid var(--celeste);
-}
-
-
-/* ─── EJES DE ACCIÓN ─────────────────────────────
-   Lista dividida con líneas — sin cards flotantes.
-   Fondo blanco puro para máxima legibilidad.
-─────────────────────────────────────────────────── */
-.ejes {
-  padding: 6rem 2.5rem;
-  background: var(--blanco-puro);
-}
-.ejes-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 4rem;
-  align-items: end;
-}
-.ejes-header-desc {
-  font-size: 0.95rem;
-  line-height: 1.75;
-  color: var(--texto-medio);
-  max-width: 42ch;
-}
-.ejes-lista { border-top: 1px solid var(--gris-borde); }
-.eje-fila {
-  display: grid;
-  grid-template-columns: 3rem 1.2fr 1fr;
-  gap: 2rem;
-  align-items: start;
-  padding: 1.75rem 0;
-  border-bottom: 1px solid var(--gris-borde);
-  transition: background 0.2s;
-  cursor: default;
-}
-.eje-fila:hover {
-  background: var(--gris-seccion);
-  margin-inline: -2.5rem;
-  padding-inline: 2.5rem;
-}
-.eje-num {
-  font-family: var(--ff-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  color: var(--celeste);
-  padding-top: 0.2rem;
-}
-.eje-nombre {
-  font-family: var(--ff-title);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--marino);
-  line-height: 1.2;
-}
-.eje-desc {
-  font-size: 0.88rem;
-  line-height: 1.7;
-  color: var(--texto-medio);
-}
-/* Fila de Medio Ambiente — acento verde especial */
-.eje-fila.medio-ambiente .eje-num { color: var(--verde-vivo); }
-.eje-fila.medio-ambiente .eje-nombre { color: var(--verde); }
-
-
-/* ─── PROYECTO FUERTE APACHE ─────────────────────
-   Sección marino oscuro con texto sobre fondo.
-   Layout 2 columnas: título izq / descripción der.
-─────────────────────────────────────────────────── */
-.proyecto {
-  background: var(--marino);
-  padding: 7rem 2.5rem;
-  position: relative;
-  overflow: hidden;
-  border-top: 1px solid rgba(45,125,210,0.15);
-}
-/* Texto decorativo de fondo */
-.proyecto::before {
-  content: 'FUERTE APACHE';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--ff-title);
-  font-size: 14vw;
-  font-weight: 800;
-  color: rgba(45,125,210,0.03);
-  white-space: nowrap;
-  pointer-events: none;
-  letter-spacing: 0.05em;
-}
-.proyecto-inner {
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 5rem;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-.proyecto-eyebrow {
-  font-family: var(--ff-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--celeste-vivo);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-.proyecto-eyebrow::before {
-  content: '';
-  width: 1.5rem; height: 1px;
-  background: var(--celeste-vivo);
-}
-.proyecto-titulo {
-  font-family: var(--ff-title);
-  font-size: clamp(2.8rem, 5vw, 4.8rem);
-  font-weight: 800;
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  color: var(--blanco-puro);
-  margin-bottom: 0.5rem;
-}
-.proyecto-titulo em {
-  font-style: normal;
-  -webkit-text-stroke: 1.5px var(--celeste);
-  color: transparent;
-}
-.proyecto-derecha {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.proyecto-lista {
-  border-top: 1px solid rgba(45,125,210,0.15);
-}
-.proyecto-item {
-  padding: 0.7rem 0;
-  border-bottom: 1px solid rgba(45,125,210,0.1);
-  font-family: var(--ff-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  color: rgba(244,242,238,0.55);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.proyecto-item::before {
-  content: '→';
-  color: var(--celeste-vivo);
-  font-size: 0.65rem;
-  flex-shrink: 0;
-}
-/* Badge "Eje Principal" */
-.proyecto-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--ff-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  border: 1px solid rgba(45,125,210,0.35);
-  color: var(--celeste-vivo);
-  padding: 0.4rem 0.9rem;
-  align-self: flex-start;
-}
-
-
-/* ─── AUDIOVISUAL ────────────────────────────────
-   Fondo gris claro — contraste con secciones oscuras.
-   Grilla bento asimétrica: 1 card grande + 3 chicas.
-─────────────────────────────────────────────────── */
-.av {
-  padding: 6rem 2.5rem;
-  background: var(--gris-seccion);
-}
-.av-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-/* Grilla bento: columna 1 ocupa 2 filas */
-.av-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  grid-template-rows: 260px 200px;
-  gap: 3px;
-}
-.av-card:first-child { grid-row: 1 / 3; }
-
-/* Cada card de video */
-.av-card {
-  position: relative;
-  overflow: hidden;
-  background: var(--marino-med);
-  cursor: pointer;
-}
-.av-card-bg {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.6s var(--ease);
-  /*
-    PARA THUMBNAIL YOUTUBE:
-    background: url('assets/img/video-N.jpg') center/cover no-repeat;
-    O usar: <img src="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg">
-  */
-}
-.av-card:hover .av-card-bg { transform: scale(1.04); }
-
-/* Fondos placeholder por card */
-.av-bg-1 { background: linear-gradient(160deg, #061525 0%, #0a1535 100%); }
-.av-bg-2 { background: linear-gradient(160deg, #091020 0%, #0f1a30 100%); }
-.av-bg-3 { background: linear-gradient(160deg, #050e1a 0%, #0a1828 100%); }
-.av-bg-4 { background: linear-gradient(160deg, #071018 0%, #0c1525 100%); }
-
-/* Degradado oscuro en la parte inferior de cada card */
-.av-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10,15,30,0.92) 0%, transparent 55%);
-}
-
-/* Botón play circular */
-.av-play {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px; height: 50px;
-  border: 1.5px solid rgba(45,125,210,0.4);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: rgba(244,242,238,0.6);
-  transition: border-color 0.25s, color 0.25s, background 0.25s;
-  z-index: 1;
-}
-.av-card:hover .av-play {
-  border-color: var(--celeste-vivo);
-  color: var(--celeste-vivo);
-  background: rgba(45,125,210,0.12);
-}
-
-/* Info del video: tag + título */
-.av-info {
-  position: absolute;
-  bottom: 1.1rem; left: 1.1rem; right: 1.1rem;
-  z-index: 1;
-}
-.av-tag {
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--celeste-vivo);
-  margin-bottom: 0.3rem;
-}
-.av-titulo {
-  font-family: var(--ff-title);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--blanco-puro);
-  line-height: 1.25;
-}
-
-
-/* ─── CASA EDA ───────────────────────────────────
-   Fondo marino con borde celeste izquierdo.
-   2 columnas: texto izq / imagen der.
-─────────────────────────────────────────────────── */
-.casa {
-  background: var(--marino-med);
-  padding: 6rem 2.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6rem;
-  align-items: center;
-  border-top: 1px solid rgba(45,125,210,0.12);
-}
-.casa-texto {
-  border-left: 2px solid var(--celeste);
-  padding-left: 2rem;
-}
-.casa-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 2rem;
-}
-.casa-pill {
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  border: 1px solid rgba(45,125,210,0.25);
-  color: rgba(244,242,238,0.5);
-  padding: 0.35rem 0.85rem;
-}
-/* Imagen / visual de la Casa */
-.casa-visual {
-  background: var(--marino);
-  aspect-ratio: 4/3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(45,125,210,0.12);
-  position: relative;
-  overflow: hidden;
-  /*
-    PARA FOTO DEL ESPACIO:
-    background: url('assets/img/casa-eda.jpg') center/cover no-repeat;
-  */
-}
-.casa-visual-texto {
-  font-family: var(--ff-title);
-  font-size: 5rem;
-  font-weight: 800;
-  color: rgba(45,125,210,0.07);
-  text-align: center;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-.casa-visual-label {
-  position: absolute;
-  bottom: 1.1rem; right: 1.1rem;
-  font-family: var(--ff-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--celeste-vivo);
-  border: 1px solid rgba(45,125,210,0.3);
-  padding: 0.3rem 0.7rem;
-  background: rgba(10,15,30,0.5);
-}
-
-
-/* ─── DONACIONES / CTA PRINCIPAL ─────────────────
-   La única sección donde el ROJO es protagonista.
-   Sección centrada, corta, impacto máximo.
-─────────────────────────────────────────────────── */
-.donar {
-  background: var(--rojo);
-  padding: 5rem 2.5rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-/* Texto decorativo de fondo */
-.donar::before {
-  content: 'DONAR';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--ff-title);
-  font-size: 22vw;
-  font-weight: 800;
-  color: rgba(255,255,255,0.04);
-  pointer-events: none;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-.donar-inner {
-  max-width: 640px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-.donar-titulo {
-  font-family: var(--ff-title);
-  font-size: clamp(2.5rem, 4vw, 3.8rem);
-  font-weight: 800;
-  color: var(--blanco-puro);
-  line-height: 1.05;
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.01em;
-}
-.donar-desc {
-  font-size: 1rem;
-  line-height: 1.75;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 2.5rem;
-  max-width: 48ch;
-  margin-inline: auto;
-}
-.donar-btns {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-/* Botón blanco sobre rojo */
-.btn-donar-blanco {
-  background: var(--blanco-puro);
-  color: var(--rojo);
-  border-radius: 999px;
-  padding: 0.9rem 2.5rem;
-  font-family: var(--ff-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 700;
-  transition: background 0.25s, transform 0.15s;
-  display: inline-block;
-  white-space: nowrap;
-}
-.btn-donar-blanco:hover {
-  background: #f0ece5;
-  transform: translateY(-2px);
-}
-/* Botón outline blanco sobre rojo */
-.btn-donar-outline {
-  background: transparent;
-  color: rgba(255,255,255,0.85);
-  border: 1.5px solid rgba(255,255,255,0.4);
-  border-radius: 999px;
-  padding: 0.9rem 2.5rem;
-  font-family: var(--ff-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: border-color 0.25s, color 0.25s;
-  display: inline-block;
-  white-space: nowrap;
-}
-.btn-donar-outline:hover {
-  border-color: rgba(255,255,255,0.8);
-  color: white;
-}
-
-
-/* ─── VISIÓN ─────────────────────────────────────
-   Sección marino oscuro con cita institucional.
-─────────────────────────────────────────────────── */
-.vision {
-  background: var(--marino);
-  padding: 8rem 2.5rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.vision::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 0%,
-    rgba(45,125,210,0.07) 0%,
-    transparent 70%
-  );
-}
-.vision-inner {
-  max-width: 780px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-.vision-cita {
-  font-family: var(--ff-serif);
-  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
-  font-style: italic;
-  line-height: 1.65;
-  color: rgba(244,242,238,0.7);
-  margin: 2.5rem auto;
-  max-width: 64ch;
-}
-.vision-cita strong {
-  font-style: normal;
-  color: var(--celeste-vivo);
-  font-weight: 400;
-}
-
-
-/* ─── FOOTER ─────────────────────────────────────
-   4 columnas sobre fondo ink (negro más profundo).
-─────────────────────────────────────────────────── */
-.footer {
-  background: var(--ink);
-  border-top: 1px solid rgba(45,125,210,0.12);
-  padding: 5rem 2.5rem 2.5rem;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 4rem;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.footer-logo {
-  font-family: var(--ff-title);
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--blanco-puro);
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
-}
-.footer-logo em { font-style: normal; color: var(--celeste-vivo); }
-.footer-desc {
-  font-size: 0.85rem;
-  line-height: 1.75;
-  color: rgba(244,242,238,0.35);
-  max-width: 32ch;
-  margin-bottom: 2rem;
-  font-weight: 400;
-}
-/* Redes sociales */
-.footer-social { display: flex; gap: 0.6rem; }
-.social-link {
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 1px solid rgba(45,125,210,0.2);
-  color: rgba(244,242,238,0.4);
-  padding: 0.4rem 0.75rem;
-  transition: border-color 0.25s, color 0.25s;
-}
-.social-link:hover { border-color: var(--celeste-vivo); color: var(--celeste-vivo); }
-.footer-col-titulo {
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--celeste);
-  margin-bottom: 1.5rem;
-}
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-.footer-links a {
-  font-size: 0.85rem;
-  color: rgba(244,242,238,0.4);
-  transition: color 0.2s;
-}
-.footer-links a:hover { color: var(--blanco); }
-.footer-bottom {
-  padding-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-.footer-copy {
-  font-family: var(--ff-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: rgba(244,242,238,0.2);
-}
-.footer-copy a { color: var(--celeste); }
-.footer-copy a:hover { color: var(--celeste-vivo); }
-
-
-/* ─── UTILIDADES COMPARTIDAS ─────────────────────
-   Clases reutilizables en todas las secciones.
-─────────────────────────────────────────────────── */
-
-/* Etiqueta pequeña sobre títulos */
-.s-label {
-  font-family: var(--ff-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--celeste);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.9rem;
-}
-.s-label::before {
-  content: '';
-  width: 1.5rem; height: 1px;
-  background: var(--celeste);
-}
-/* Variante para secciones claras */
-.s-label.dark {
-  color: var(--marino-claro);
-}
-.s-label.dark::before { background: var(--celeste); }
-
-/* Título de sección — versión oscura */
-.s-title {
-  font-family: var(--ff-title);
-  font-size: clamp(2.2rem, 4vw, 3.8rem);
-  font-weight: 800;
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  color: var(--blanco-puro);
-  margin-bottom: 1.25rem;
-}
-.s-title em {
-  font-style: normal;
-  -webkit-text-stroke: 1.5px var(--celeste);
-  color: transparent;
-}
-
-/* Título de sección — versión clara */
-.s-title.claro {
-  color: var(--marino);
-  -webkit-text-stroke: 0;
-}
-.s-title.claro em {
-  -webkit-text-stroke: 1.5px var(--celeste);
-  color: transparent;
-}
-
-/* Párrafo — versión oscura */
-.s-para {
-  font-size: 0.95rem;
-  line-height: 1.8;
-  color: rgba(244,242,238,0.6);
-  max-width: 52ch;
-}
-/* Párrafo — versión clara */
-.s-para.claro { color: var(--texto-medio); }
-
-/* ─── BOTONES ─────────────────────────────────────
-   Todos pills (border-radius: 999px).
-   .btn-celeste → acción principal general
-   .btn-outline  → acción secundaria
-   .btn-rojo     → SOLO donación
-─────────────────────────────────────────────────── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--ff-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 0.75rem 1.75rem;
-  border-radius: 999px;
-  transition: background 0.25s, color 0.25s, border-color 0.25s;
-  white-space: nowrap;
-  border: none;
-  cursor: pointer;
-}
-.btn:active { transform: scale(0.98); }
-
-.btn-celeste {
-  background: var(--celeste);
-  color: var(--blanco-puro);
-}
-.btn-celeste:hover { background: var(--celeste-vivo); }
-
-.btn-outline {
-  background: transparent;
-  color: rgba(244,242,238,0.75);
-  border: 1.5px solid rgba(45,125,210,0.35);
-}
-.btn-outline:hover {
-  border-color: var(--celeste-vivo);
-  color: var(--celeste-vivo);
-}
-
-.btn-outline-claro {
-  background: transparent;
-  color: var(--marino);
-  border: 1.5px solid rgba(10,15,30,0.2);
-}
-.btn-outline-claro:hover {
-  border-color: var(--celeste);
-  color: var(--celeste);
-}
-
-
-/* ─── ANIMACIONES ─────────────────────────────────
-   rise   → entrada desde abajo (hero + reveal)
-   ticker → marquee horizontal
-   pulse  → pulso del indicador de scroll
-─────────────────────────────────────────────────── */
-@keyframes rise {
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes ticker {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50%       { opacity: 1; }
-}
-
-/* Clase reveal — controlada por IntersectionObserver */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-}
-.reveal.in-view { opacity: 1; transform: translateY(0); }
-.reveal-d1 { transition-delay: 0.1s; }
-.reveal-d2 { transition-delay: 0.22s; }
-.reveal-d3 { transition-delay: 0.38s; }
-
-
-/* ─── SLIDER DE ACTIVIDADES ──────────────────────
-   Carrusel de fotos comunitarias con auto-play.
-   Flechas de navegación izquierda/derecha.
-   Indicadores de posición (dots) abajo.
-─────────────────────────────────────────────────── */
-.slider-section {
-  background: var(--marino-med);
-  padding: 6rem 0 0;
-  overflow: hidden;
-  border-top: 1px solid rgba(45,125,210,0.12);
-}
-.slider-header {
-  padding: 0 2.5rem 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-/* Contenedor del carrusel — overflow hidden para ocultar slides fuera */
-.slider-wrap {
-  position: relative;
-  overflow: hidden;
-}
-/* Track: todos los slides en fila horizontal */
-.slider-track {
-  display: flex;
-  transition: transform 0.6s var(--ease);
-  cursor: grab;
-  width: 100%;
-  will-change: transform;
-}
-.slider-track:active { cursor: grabbing; }
-/* Cada slide ocupa 33.33% → 3 visibles a la vez en desktop */
-.slide {
-  min-width: 33.333%;
-  width: 33.333%;
-  height: 400px;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-}
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  transition: transform 0.5s var(--ease);
-  pointer-events: none;
-}
-.slide:hover img { transform: scale(1.04); }
-/* Caption flotante sobre cada foto */
-.slide-caption {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 2rem 1.25rem 1rem;
-  background: linear-gradient(to top, rgba(10,15,30,0.85) 0%, transparent 100%);
-  font-family: var(--ff-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(244,242,238,0.7);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.slide:hover .slide-caption { opacity: 1; }
-
-/* Controles del slider */
-.slider-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 2.5rem 2rem;
-}
-/* Dots de posición */
-.slider-dots {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: rgba(45,125,210,0.25);
-  transition: background 0.3s, width 0.3s;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-}
-.dot.active {
-  background: var(--celeste-vivo);
-  width: 20px;
-  border-radius: 3px;
-}
-/* Flechas prev/next */
-.slider-arrows { display: flex; gap: 0.75rem; }
-.slider-arrow {
-  width: 40px; height: 40px;
-  border: 1px solid rgba(45,125,210,0.3);
-  background: transparent;
-  color: rgba(244,242,238,0.6);
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.25s, color 0.25s, background 0.25s;
-}
-.slider-arrow:hover {
-  border-color: var(--celeste-vivo);
-  color: var(--celeste-vivo);
-  background: rgba(45,125,210,0.08);
-}
-.slider-arrow:disabled {
-  opacity: 0.25;
-  cursor: default;
-}
-
-/* ─── SECCIÓN PROYECTOS TERRITORIALES ────────────
-   Grid asimétrico: foto grande izq + texto der
-   Para el proyecto del mural Club Patria
-─────────────────────────────────────────────────── */
-.proyectos-territoriales {
-  background: var(--gris-seccion);
-  padding: 6rem 2.5rem;
-  border-top: 1px solid var(--gris-borde);
-}
-.pt-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  margin-top: 3.5rem;
-}
-.pt-fotos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 280px 200px;
-  gap: 3px;
-}
-/* Primera foto ocupa el ancho completo */
-.pt-foto-grande {
-  grid-column: 1 / 3;
-  overflow: hidden;
-}
-.pt-foto-chica { overflow: hidden; }
-.pt-foto-grande img,
-.pt-foto-chica img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.5s var(--ease);
-}
-.pt-foto-grande:hover img,
-.pt-foto-chica:hover img { transform: scale(1.04); }
-
-.pt-texto {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.pt-proyecto-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--ff-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  border: 1px solid rgba(45,125,210,0.3);
-  color: var(--celeste);
-  padding: 0.4rem 0.9rem;
-  align-self: flex-start;
-}
-
-/* ─── RESPONSIVE ──────────────────────────────────
-   1024px → tablet
-   640px  → móvil
-─────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .hero           { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
-  .hero::after    { display: none; }
-  .hero-deco      { display: none; }
-  .sobre          { grid-template-columns: 1fr; }
-  .sobre-visual   { min-height: 280px; }
-  .ejes-header    { grid-template-columns: 1fr; }
-  .eje-fila       { grid-template-columns: 2.5rem 1fr; }
-  .eje-desc       { display: none; }
-  .proyecto-inner { grid-template-columns: 1fr; gap: 3rem; }
-  .av-grid        { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-  .av-card:first-child { grid-row: auto; grid-column: 1 / 3; }
-  .casa           { grid-template-columns: 1fr; gap: 3rem; }
-  .casa-visual    { display: none; }
-  .footer-grid    { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-  .slide          { min-width: 50%; }
-  .pt-grid        { grid-template-columns: 1fr; }
-  .pt-fotos       { grid-template-rows: 220px 160px; }
-}
-@media (max-width: 640px) {
-  .nav            { padding: 1rem 1.25rem; }
-  .nav-links      { display: none; }
-  .av-grid        { grid-template-columns: 1fr; }
-  .av-card:first-child { grid-column: auto; }
-  .footer-grid    { grid-template-columns: 1fr; }
-  .eje-fila       { grid-template-columns: 2rem 1fr; gap: 0.75rem; }
-  .donar-btns     { flex-direction: column; align-items: center; }
-  .slide          { min-width: 100%; }
-  .pt-fotos       { grid-template-columns: 1fr; grid-template-rows: 200px 160px 160px; }
-  .pt-foto-grande { grid-column: 1; }
-}
-
-/* Respeta movimiento reducido del sistema */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundación Ejército de los Andes</title>
+  <meta name="description" content="Fundación territorial del conurbano bonaerense. Transformación social, cultural, educativa y audiovisual desde Fuerte Apache.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     NAVEGACIÓN FIJA
-     .is-scrolled se agrega con JS
-     ══════════════════════════════════ -->
 <nav class="nav" id="nav">
-  <a href="#inicio" class="nav-logo">
-    Fundación<br>
-    <em>Ejército de los Andes</em>
-  </a>
+  <a href="#inicio" class="nav-logo">Fundación<br><em>Ejército de los Andes</em></a>
   <ul class="nav-links">
     <li><a href="#nosotros">La Fundación</a></li>
     <li><a href="#ejes">Ejes</a></li>
@@ -1383,88 +20,62 @@ body {
     <li><a href="#audiovisual">Audiovisual</a></li>
     <li><a href="#donar" class="nav-donar">❤ Donar</a></li>
   </ul>
+  <button class="nav-burger" id="burger" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
+<div class="nav-mobile" id="navMobile">
+  <a href="#nosotros">La Fundación</a>
+  <a href="#ejes">Ejes de acción</a>
+  <a href="#proyecto">Proyecto Fuerte Apache</a>
+  <a href="#audiovisual">Audiovisual</a>
+  <a href="#casa">Casa EDA</a>
+  <a href="#donar" class="btn-rojo btn">❤ Donar ahora</a>
+</div>
 
-<!-- ══════════════════════════════════
-     HERO — Video de dron de fondo
-     ══════════════════════════════════ -->
 <section class="hero" id="inicio">
-
-  <!-- Video de dron de fondo via YouTube
-       autoplay=1 + mute=1 + loop=1 → reproducción automática en silencio
-       playlist=fRrEFt1HJ2M → necesario para que el loop funcione
-       controls=0, modestbranding=1 → sin controles ni logo
-       pointer-events: none en CSS → el iframe no captura clicks del usuario
-  -->
-  <iframe
-    class="hero-video"
+  <iframe class="hero-video"
     src="https://www.youtube.com/embed/fRrEFt1HJ2M?autoplay=1&mute=1&loop=1&playlist=fRrEFt1HJ2M&controls=0&disablekb=1&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    aria-hidden="true"
-    title=""
-  ></iframe>
-
-  <!-- Capa marino encima del video -->
+    frameborder="0" allow="autoplay; encrypted-media" aria-hidden="true" title=""></iframe>
   <div class="hero-overlay"></div>
 
-  <!-- Etiqueta -->
-  <div class="hero-eyebrow">
-    Conurbano Bonaerense &nbsp;·&nbsp; Fuerte Apache
-  </div>
-
-  <!-- Título -->
-  <h1 class="hero-title">
-    Fundación<br>
-    <span class="outline">Ejército</span>
-    <span class="outline">de los Andes</span>
-    <span class="small">Territorio · Cultura · Transformación</span>
-  </h1>
-
-  <!-- Descripción y CTAs -->
-  <div class="hero-foot">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Conurbano Bonaerense · Fuerte Apache</div>
+    <h1 class="hero-title">
+      Fundación<br>
+      <span class="outline">Ejército</span>
+      <span class="outline">de los Andes</span>
+      <span class="small">Territorio · Cultura · Transformación</span>
+    </h1>
     <p class="hero-desc">
       Institución territorial nacida en el conurbano bonaerense.
-      Impulsamos procesos de transformación social, educativa,
-      cultural y audiovisual con alcance local, nacional e internacional.
+      Impulsamos transformación social, educativa, cultural y audiovisual
+      con alcance local, nacional e internacional.
     </p>
     <div class="hero-ctas">
       <a href="#nosotros" class="btn btn-celeste">Conocer la Fundación</a>
       <a href="#proyecto" class="btn btn-outline">Proyecto Fuerte Apache</a>
     </div>
-  </div>
-
-  <!-- Número decorativo + stats (columna derecha) -->
-  <div class="hero-deco">
-    <div class="hero-deco-year">24</div>
     <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="hero-stat-num">7</span>
-        <span class="hero-stat-label">Ejes de acción</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">01</span>
-        <span class="hero-stat-label">Proyecto central</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">∞</span>
-        <span class="hero-stat-label">Impacto territorial</span>
-      </div>
+      <div class="hero-stat"><span class="hero-stat-num">7</span><span class="hero-stat-label">Ejes</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">01</span><span class="hero-stat-label">Proyecto central</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">∞</span><span class="hero-stat-label">Impacto</span></div>
     </div>
   </div>
 
-  <div class="hero-scroll">Scroll para explorar</div>
-
+  <div class="hero-deco">
+    <div class="hero-deco-year">24</div>
+    <div class="hero-deco-stats">
+      <div class="hero-stat-desktop"><span class="hero-stat-num">7</span><span class="hero-stat-label">Ejes de acción</span></div>
+      <div class="hero-stat-desktop"><span class="hero-stat-num">01</span><span class="hero-stat-label">Proyecto central</span></div>
+      <div class="hero-stat-desktop"><span class="hero-stat-num">∞</span><span class="hero-stat-label">Impacto territorial</span></div>
+    </div>
+  </div>
 </section>
 
-
-<!-- ══════════════════════════════════
-     TICKER — Franja animada de ejes
-     Duplicado para loop sin cortes
-     ══════════════════════════════════ -->
-<div class="ticker">
-  <div class="ticker-track" aria-hidden="true">
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
     <span class="ticker-item"><span>01</span> &nbsp; Comunicación Territorial</span>
     <span class="ticker-item"><span>02</span> &nbsp; Educación y Tecnología</span>
     <span class="ticker-item"><span>03</span> &nbsp; Deporte y Clubes</span>
@@ -1484,266 +95,104 @@ body {
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════
-     QUIÉNES SOMOS
-     Izq: visual / Der: texto claro
-     ══════════════════════════════════ -->
 <div class="sobre" id="nosotros">
-
-  <!-- Columna visual — foto real del equipo -->
-  <div class="sobre-visual" style="background: url('assets/img/A7409533.jpg') center/cover no-repeat;">
-    <div class="sobre-tag">Fundada 2024 · Conurbano Bonaerense</div>
+  <div class="sobre-foto">
+    <img src="assets/img/A7409533.jpg" alt="Actividad comunitaria" loading="lazy">
   </div>
-
-  <!-- Columna texto -->
   <div class="sobre-texto">
     <div class="reveal">
       <div class="s-label dark">Quiénes somos</div>
-      <h2 class="s-title claro">
-        Integración<br>
-        <em>Organización</em><br>
-        Construcción
-      </h2>
+      <h2 class="s-title claro">Integración<br><em>Organización</em><br>Construcción</h2>
     </div>
-
     <blockquote class="sobre-cita reveal reveal-d1">
-      "Nacida en el conurbano bonaerense, orientada a promover procesos
-      de transformación social con alcance local, nacional e internacional."
+      "Nacida en el conurbano bonaerense, orientada a promover procesos de transformación social con alcance local, nacional e internacional."
     </blockquote>
-
     <p class="s-para claro reveal reveal-d2">
-      Institución territorial, cultural, educativa, tecnológica, ambiental
-      y audiovisual que trabaja para impulsar programas vinculados a la
-      inclusión social, la educación, la cultura, la tecnología y el
-      desarrollo comunitario.
+      Institución territorial, cultural, educativa, tecnológica, ambiental y audiovisual que trabaja para impulsar programas vinculados a la inclusión social, la educación, la cultura, la tecnología y el desarrollo comunitario.
     </p>
-
-    <a href="#ejes" class="btn btn-outline-claro reveal reveal-d3" style="align-self:flex-start; margin-top:0.5rem;">
-      Ver ejes de acción
-    </a>
+    <a href="#ejes" class="btn btn-outline-claro reveal reveal-d3" style="align-self:flex-start;margin-top:.5rem;">Ver ejes de acción</a>
   </div>
-
 </div>
 
-
-<!-- ══════════════════════════════════
-     EJES DE ACCIÓN
-     Lista dividida sobre fondo blanco
-     ══════════════════════════════════ -->
 <section class="ejes" id="ejes">
-
-  <div class="ejes-header">
-    <div class="reveal">
-      <div class="s-label dark">Cómo trabajamos</div>
-      <h2 class="s-title claro">Ejes de<br><em>Acción</em></h2>
-    </div>
-    <div class="ejes-header-desc reveal reveal-d1">
-      Nuestros programas se estructuran en 7 ejes complementarios que abordan el desarrollo territorial de manera integral, desde la comunicación hasta el medio ambiente.
-    </div>
+  <div class="ejes-intro reveal">
+    <div class="s-label dark">Cómo trabajamos</div>
+    <h2 class="s-title claro">Ejes de<br><em>Acción</em></h2>
   </div>
-
   <div class="ejes-lista">
-    <div class="eje-fila reveal">
-      <span class="eje-num">01</span>
-      <span class="eje-nombre">Comunicación Territorial</span>
-      <span class="eje-desc">Entrevistas, streaming, documentales, recorridas barriales, mesas de debate y coberturas comunitarias para fortalecer la identidad territorial.</span>
-    </div>
-    <div class="eje-fila reveal">
-      <span class="eje-num">02</span>
-      <span class="eje-nombre">Educación y Tecnología</span>
-      <span class="eje-desc">Alfabetización digital, inteligencia artificial, producción audiovisual y formación laboral para jóvenes con menos oportunidades.</span>
-    </div>
-    <div class="eje-fila reveal">
-      <span class="eje-num">03</span>
-      <span class="eje-nombre">Deporte y Clubes</span>
-      <span class="eje-desc">Actividades deportivas y recreativas como herramientas de contención, integración, salud e identidad territorial.</span>
-    </div>
-    <div class="eje-fila reveal">
-      <span class="eje-num">04</span>
-      <span class="eje-nombre">Fe y Comunidad</span>
-      <span class="eje-desc">Trabajo articulado con iglesias, organizaciones sociales y redes de contención barrial para fortalecer la integración.</span>
-    </div>
-    <div class="eje-fila medio-ambiente reveal">
-      <span class="eje-num">05</span>
-      <span class="eje-nombre">Medio Ambiente</span>
-      <span class="eje-desc">Reciclaje, recuperación de espacios públicos, forestación y educación ambiental comunitaria.</span>
-    </div>
-    <div class="eje-fila reveal">
-      <span class="eje-num">06</span>
-      <span class="eje-nombre">Juventud y Cultura</span>
-      <span class="eje-desc">Acompañamiento a artistas, músicos, streamers, emprendedores y creadores digitales del territorio.</span>
-    </div>
-    <div class="eje-fila reveal">
-      <span class="eje-num">07</span>
-      <span class="eje-nombre">Relaciones Institucionales</span>
-      <span class="eje-desc">Vínculos con embajadas, universidades y redes latinoamericanas para impulsar cooperación e intercambio cultural.</span>
-    </div>
+    <div class="eje-fila reveal"><span class="eje-num">01</span><div><div class="eje-nombre">Comunicación Territorial</div><div class="eje-desc">Entrevistas, streaming, documentales, recorridas barriales, mesas de debate y coberturas comunitarias.</div></div></div>
+    <div class="eje-fila reveal"><span class="eje-num">02</span><div><div class="eje-nombre">Educación y Tecnología</div><div class="eje-desc">Alfabetización digital, inteligencia artificial, producción audiovisual y formación laboral.</div></div></div>
+    <div class="eje-fila reveal"><span class="eje-num">03</span><div><div class="eje-nombre">Deporte y Clubes</div><div class="eje-desc">Actividades deportivas y recreativas como herramientas de contención e integración territorial.</div></div></div>
+    <div class="eje-fila reveal"><span class="eje-num">04</span><div><div class="eje-nombre">Fe y Comunidad</div><div class="eje-desc">Trabajo articulado con iglesias, organizaciones sociales y redes de contención barrial.</div></div></div>
+    <div class="eje-fila medio-ambiente reveal"><span class="eje-num">05</span><div><div class="eje-nombre">Medio Ambiente</div><div class="eje-desc">Reciclaje, recuperación de espacios públicos, forestación y educación ambiental comunitaria.</div></div></div>
+    <div class="eje-fila reveal"><span class="eje-num">06</span><div><div class="eje-nombre">Juventud y Cultura</div><div class="eje-desc">Acompañamiento a artistas, músicos, streamers, emprendedores y creadores digitales.</div></div></div>
+    <div class="eje-fila reveal"><span class="eje-num">07</span><div><div class="eje-nombre">Relaciones Institucionales</div><div class="eje-desc">Vínculos con embajadas, universidades y redes latinoamericanas para cooperación e intercambio.</div></div></div>
   </div>
-
 </section>
 
-
-<!-- ══════════════════════════════════
-     PROYECTOS TERRITORIALES
-     Mural Club Patria Ingenieros
-     Grid asimétrico: fotos izq / texto der
-     ══════════════════════════════════ -->
 <section class="proyectos-territoriales" id="proyectos-territoriales">
-
   <div class="reveal">
     <div class="s-label dark">Acciones en el territorio</div>
     <h2 class="s-title claro">Proyectos<br><em>en el barrio</em></h2>
   </div>
-
-  <div class="pt-grid">
-
-    <!-- Fotos del mural -->
+  <div class="pt-layout">
     <div class="pt-fotos reveal">
-      <!-- Foto grande: resultado final del mural -->
-      <div class="pt-foto-grande">
-        <img src="assets/img/patria_ingenieros.jpeg" alt="Mural Club Patria Ingenieros terminado" loading="lazy">
-      </div>
-      <!-- Foto chica: proceso de pintura -->
-      <div class="pt-foto-chica">
-        <img src="assets/img/WhatsApp_Image_2026-05-26_at_3_57_20_PM.jpeg" alt="Proceso de pintura del mural" loading="lazy">
-      </div>
-      <!-- Placeholder segunda foto chica -->
-      <div class="pt-foto-chica" style="background: var(--marino-med); display:flex; align-items:center; justify-content:center;">
-        <span style="font-family:var(--ff-mono); font-size:0.6rem; letter-spacing:0.2em; color:rgba(45,125,210,0.3); text-transform:uppercase;">+ Fotos próximamente</span>
-      </div>
+      <div class="pt-foto grande"><img src="assets/img/patria_ingenieros.jpeg" alt="Mural Club Patria Ingenieros" loading="lazy"></div>
+      <div class="pt-foto"><img src="assets/img/WhatsApp_Image_2026-05-26_at_3_57_20_PM.jpeg" alt="Proceso de pintura del mural" loading="lazy"></div>
+      <div class="pt-foto-placeholder"><span>+ próximamente</span></div>
     </div>
-
-    <!-- Texto descriptivo -->
-    <div class="pt-texto reveal reveal-d2">
-      <div class="pt-proyecto-tag">★ Proyecto completado</div>
+    <div class="reveal reveal-d2">
       <div class="s-label dark">Club Patria Ingenieros</div>
-      <h3 class="s-title claro" style="font-size: clamp(1.8rem, 3vw, 2.8rem);">
-        Embellecimiento<br>de clubes<br><em>de barrio</em>
-      </h3>
-      <p class="s-para claro">
-        Intervención artística y cultural en el Club Patria de José Ingenieros.
-        Diseño y ejecución de mural identitario que recupera el espacio público
-        y refuerza la pertenencia territorial de la comunidad.
-      </p>
-      <ul style="display:flex; flex-direction:column; gap:0; border-top: 1px solid var(--gris-borde); margin-top:0.5rem;">
-        <li style="padding:0.65rem 0; border-bottom:1px solid var(--gris-borde); font-family:var(--ff-mono); font-size:0.72rem; letter-spacing:0.08em; color:var(--texto-medio); display:flex; align-items:center; gap:0.75rem;">
-          <span style="color:var(--celeste);">→</span> Diseño y ejecución del mural
-        </li>
-        <li style="padding:0.65rem 0; border-bottom:1px solid var(--gris-borde); font-family:var(--ff-mono); font-size:0.72rem; letter-spacing:0.08em; color:var(--texto-medio); display:flex; align-items:center; gap:0.75rem;">
-          <span style="color:var(--celeste);">→</span> Recuperación de espacio comunitario
-        </li>
-        <li style="padding:0.65rem 0; border-bottom:1px solid var(--gris-borde); font-family:var(--ff-mono); font-size:0.72rem; letter-spacing:0.08em; color:var(--texto-medio); display:flex; align-items:center; gap:0.75rem;">
-          <span style="color:var(--celeste);">→</span> Participación de artistas del barrio
-        </li>
-        <li style="padding:0.65rem 0; font-family:var(--ff-mono); font-size:0.72rem; letter-spacing:0.08em; color:var(--texto-medio); display:flex; align-items:center; gap:0.75rem;">
-          <span style="color:var(--celeste);">→</span> Identidad territorial y cultural
-        </li>
+      <h3 class="s-title claro" style="font-size:clamp(1.6rem,5vw,2.6rem);">Embellecimiento<br>de clubes<br><em>de barrio</em></h3>
+      <p class="s-para claro" style="margin-top:.75rem;">Intervención artística en el Club Patria de José Ingenieros. Diseño y ejecución de mural identitario que recupera el espacio público y refuerza la pertenencia territorial.</p>
+      <ul class="pt-lista">
+        <li class="pt-item">Diseño y ejecución del mural</li>
+        <li class="pt-item">Recuperación de espacio comunitario</li>
+        <li class="pt-item">Participación de artistas del barrio</li>
+        <li class="pt-item">Identidad territorial y cultural</li>
       </ul>
-      <a href="#donar" class="btn btn-outline-claro" style="align-self:flex-start; margin-top:0.5rem;">
-        Apoyar proyectos similares
-      </a>
+      <a href="#donar" class="btn btn-outline-claro" style="margin-top:1rem;">Apoyar proyectos similares</a>
     </div>
-
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════
-     SLIDER — Actividades comunitarias
-     8 fotos de eventos y actividades.
-     Auto-play cada 4s + drag/swipe.
-     ══════════════════════════════════ -->
-<section class="slider-section" id="actividades">
-
-  <div class="slider-header reveal">
+<section class="carrusel-section" id="actividades">
+  <div class="carrusel-header reveal">
     <div>
       <div class="s-label">En acción</div>
       <h2 class="s-title">Actividades<br><em>Comunitarias</em></h2>
     </div>
-    <a href="#donar" class="btn btn-outline">Sumarse a las actividades</a>
+    <a href="#donar" class="btn btn-outline">Sumarse</a>
   </div>
-
-  <!-- Contenedor del carrusel -->
-  <div class="slider-wrap">
-    <div class="slider-track" id="sliderTrack">
-
-      <div class="slide">
-        <img src="assets/img/A7409544.jpg" alt="Actividad comunitaria — familia con globos argentinos" loading="lazy">
-        <div class="slide-caption">Celebración · Identidad Nacional</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409618.jpg" alt="Pintacaritas en evento comunitario" loading="lazy">
-        <div class="slide-caption">Arte · Infancia · Comunidad</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409628.jpg" alt="Actividad con niños del barrio" loading="lazy">
-        <div class="slide-caption">Cultura · Participación</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409771.jpg" alt="Evento familiar en plaza" loading="lazy">
-        <div class="slide-caption">Espacio Público · Familia</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409791.jpg" alt="Niños con banderas argentinas" loading="lazy">
-        <div class="slide-caption">Identidad · Territorio · Patria</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409480.jpg" alt="Niña con banderas argentinas" loading="lazy">
-        <div class="slide-caption">Juventud · Orgullo Nacional</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409507.jpg" alt="Voluntario con banderas argentinas" loading="lazy">
-        <div class="slide-caption">Voluntariado · Compromiso Territorial</div>
-      </div>
-
-      <div class="slide">
-        <img src="assets/img/A7409533.jpg" alt="Actividad cultural comunitaria" loading="lazy">
-        <div class="slide-caption">Integración · Cultura · Barrio</div>
-      </div>
-
+  <div class="carrusel-wrap">
+    <div class="carrusel-track" id="carruselTrack">
+      <div class="carrusel-slide"><img src="assets/img/A7409544.jpg" alt="Familia con globos argentinos" loading="lazy"><div class="carrusel-caption">Celebración · Identidad Nacional</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409618.jpg" alt="Pintacaritas en evento comunitario" loading="lazy"><div class="carrusel-caption">Arte · Infancia · Comunidad</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409628.jpg" alt="Actividad con niños del barrio" loading="lazy"><div class="carrusel-caption">Cultura · Participación</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409771.jpg" alt="Evento familiar en plaza" loading="lazy"><div class="carrusel-caption">Espacio Público · Familia</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409791.jpg" alt="Niños con banderas argentinas" loading="lazy"><div class="carrusel-caption">Identidad · Territorio · Patria</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409480.jpg" alt="Niña con banderas argentinas" loading="lazy"><div class="carrusel-caption">Juventud · Orgullo Nacional</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409507.jpg" alt="Voluntario con banderas argentinas" loading="lazy"><div class="carrusel-caption">Voluntariado · Compromiso Territorial</div></div>
+      <div class="carrusel-slide"><img src="assets/img/A7409533.jpg" alt="Actividad cultural comunitaria" loading="lazy"><div class="carrusel-caption">Integración · Cultura · Barrio</div></div>
     </div>
   </div>
-
-  <!-- Controles: dots + flechas -->
-  <div class="slider-controls">
-    <div class="slider-dots" id="sliderDots">
-      <!-- Los dots se generan dinámicamente con JS -->
-    </div>
-    <div class="slider-arrows">
-      <button class="slider-arrow" id="prevBtn" aria-label="Anterior">←</button>
-      <button class="slider-arrow" id="nextBtn" aria-label="Siguiente">→</button>
+  <div class="carrusel-controls">
+    <div class="carrusel-dots" id="carruselDots"></div>
+    <div class="carrusel-arrows">
+      <button class="c-arrow" id="carruselPrev" aria-label="Anterior">←</button>
+      <button class="c-arrow" id="carruselNext" aria-label="Siguiente">→</button>
     </div>
   </div>
-
 </section>
-     Marino oscuro — 2 columnas
-     ══════════════════════════════════ -->
+
 <section class="proyecto" id="proyecto">
   <div class="proyecto-inner">
-
     <div class="reveal">
       <div class="proyecto-eyebrow">Proyecto territorial principal</div>
-      <h2 class="proyecto-titulo">
-        Proyecto<br>
-        <em>Fuerte</em><br>
-        Apache
-      </h2>
+      <h2 class="proyecto-titulo">Proyecto<br><em>Fuerte</em><br>Apache</h2>
     </div>
-
-    <div class="proyecto-derecha reveal reveal-d1">
-      <p class="s-para">
-        Promover la transformación cultural, educativa y comunitaria del barrio
-        Ejército de los Andes mediante iniciativas audiovisuales, sociales,
-        institucionales y territoriales que mejoren la representación e
-        integración de la comunidad.
-      </p>
+    <div class="reveal reveal-d1">
+      <p class="s-para">Promover la transformación cultural, educativa y comunitaria del barrio Ejército de los Andes mediante iniciativas audiovisuales, sociales, institucionales y territoriales.</p>
       <ul class="proyecto-lista">
         <li class="proyecto-item">Producción audiovisual comunitaria</li>
         <li class="proyecto-item">Representación e identidad territorial</li>
@@ -1751,101 +200,32 @@ body {
         <li class="proyecto-item">Integración social e institucional</li>
         <li class="proyecto-item">Formación en comunicación y tecnología</li>
       </ul>
-      <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-top:1rem;">
         <a href="#donar" class="btn btn-celeste">Sumarse al proyecto</a>
-        <div class="proyecto-badge">★ Eje Principal</div>
+        <span class="proyecto-badge">★ Eje Principal</span>
       </div>
     </div>
-
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════
-     AUDIOVISUAL — Grilla bento
-     Fondo gris cálido para contraste
-     ══════════════════════════════════ -->
 <section class="av" id="audiovisual">
-
   <div class="av-head reveal">
-    <div>
-      <div class="s-label dark">Producción</div>
-      <h2 class="s-title claro">Contenido<br><em>Audiovisual</em></h2>
-    </div>
-    <a href="#" class="btn btn-outline-claro">Ver todos los proyectos</a>
+    <div><div class="s-label dark">Producción</div><h2 class="s-title claro">Contenido<br><em>Audiovisual</em></h2></div>
+    <a href="#" class="btn btn-outline-claro">Ver todos</a>
   </div>
-
   <div class="av-grid reveal reveal-d1">
-
-    <!-- Card 1: destacada (ocupa 2 filas) -->
-    <div class="av-card">
-      <div class="av-card-bg av-bg-1">
-        <!--
-          THUMBNAIL YOUTUBE:
-          <img src="https://img.youtube.com/vi/ID/maxresdefault.jpg"
-               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-        -->
-      </div>
-      <div class="av-card-overlay"></div>
-      <div class="av-play">▶</div>
-      <div class="av-info">
-        <div class="av-tag">Documental</div>
-        <div class="av-titulo">Fuerte Apache — Identidad y Territorio</div>
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="av-card">
-      <div class="av-card-bg av-bg-2"></div>
-      <div class="av-card-overlay"></div>
-      <div class="av-play">▶</div>
-      <div class="av-info">
-        <div class="av-tag">Streaming</div>
-        <div class="av-titulo">Mesas de Debate Comunitario</div>
-      </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="av-card">
-      <div class="av-card-bg av-bg-3"></div>
-      <div class="av-card-overlay"></div>
-      <div class="av-play">▶</div>
-      <div class="av-info">
-        <div class="av-tag">Cobertura</div>
-        <div class="av-titulo">Recorrida Barrial — Ejército de los Andes</div>
-      </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="av-card">
-      <div class="av-card-bg av-bg-4"></div>
-      <div class="av-card-overlay"></div>
-      <div class="av-play">▶</div>
-      <div class="av-info">
-        <div class="av-tag">Entrevista</div>
-        <div class="av-titulo">Referentes Juveniles del Barrio</div>
-      </div>
-    </div>
-
+    <div class="av-card"><div class="av-card-bg av-bg-1"></div><div class="av-card-overlay"></div><div class="av-play">▶</div><div class="av-info"><div class="av-tag">Documental</div><div class="av-titulo">Fuerte Apache — Identidad y Territorio</div></div></div>
+    <div class="av-card"><div class="av-card-bg av-bg-2"></div><div class="av-card-overlay"></div><div class="av-play">▶</div><div class="av-info"><div class="av-tag">Streaming</div><div class="av-titulo">Mesas de Debate Comunitario</div></div></div>
+    <div class="av-card"><div class="av-card-bg av-bg-3"></div><div class="av-card-overlay"></div><div class="av-play">▶</div><div class="av-info"><div class="av-tag">Cobertura</div><div class="av-titulo">Recorrida Barrial — Ejército de los Andes</div></div></div>
+    <div class="av-card"><div class="av-card-bg av-bg-4"></div><div class="av-card-overlay"></div><div class="av-play">▶</div><div class="av-info"><div class="av-tag">Entrevista</div><div class="av-titulo">Referentes Juveniles del Barrio</div></div></div>
   </div>
-
 </section>
 
-
-<!-- ══════════════════════════════════
-     CASA EDA
-     Marino med — split con borde celeste
-     ══════════════════════════════════ -->
 <section class="casa" id="casa">
-
   <div class="casa-texto reveal">
     <div class="s-label">Espacio físico</div>
     <h2 class="s-title">Casa<br>Ejército<br>de los Andes</h2>
-    <p class="s-para">
-      Espacio de carácter cultural, educativo, audiovisual, tecnológico,
-      comunitario e institucional. Destinado a actividades formativas,
-      producción audiovisual y proyectos sociales.
-    </p>
+    <p class="s-para" style="margin-top:.75rem;">Espacio cultural, educativo, audiovisual, tecnológico y comunitario destinado a actividades formativas, producción audiovisual y proyectos sociales.</p>
     <div class="casa-pills">
       <span class="casa-pill">Cultural</span>
       <span class="casa-pill">Educativo</span>
@@ -1853,39 +233,18 @@ body {
       <span class="casa-pill">Tecnológico</span>
       <span class="casa-pill">Comunitario</span>
     </div>
-    <a href="#donar" class="btn btn-outline" style="margin-top:2rem; align-self:flex-start;">
-      Saber más
-    </a>
+    <a href="#donar" class="btn btn-outline" style="margin-top:1.75rem;">Saber más</a>
   </div>
-
   <div class="casa-visual reveal reveal-d2">
-    <!--
-      FOTO DEL ESPACIO: en CSS a .casa-visual agregar:
-      background: url('assets/img/casa-eda.jpg') center/cover no-repeat;
-    -->
     <div class="casa-visual-texto">CASA<br>EDA</div>
-    <div class="casa-visual-label">Próximamente</div>
   </div>
-
 </section>
 
-
-<!-- ══════════════════════════════════
-     DONACIONES — SECCIÓN ROJA
-     El ÚNICO lugar donde el rojo domina.
-     CTAs de alta conversión.
-     ══════════════════════════════════ -->
 <section class="donar reveal" id="donar">
   <div class="donar-inner">
-    <div class="s-label" style="justify-content:center; color:rgba(255,255,255,0.6);">
-      <span style="background:rgba(255,255,255,0.2);width:1.5rem;height:1px;display:block;"></span>
-      Apoyá la Fundación
-    </div>
+    <div class="s-label" style="justify-content:center;color:rgba(255,255,255,0.5);">Apoyá la Fundación</div>
     <h2 class="donar-titulo">Tu apoyo<br>transforma<br>el territorio</h2>
-    <p class="donar-desc">
-      Cada aporte nos permite seguir desarrollando programas educativos,
-      culturales y audiovisuales en el barrio Ejército de los Andes.
-    </p>
+    <p class="donar-desc">Cada aporte nos permite seguir desarrollando programas educativos, culturales y audiovisuales en el barrio Ejército de los Andes.</p>
     <div class="donar-btns">
       <a href="mailto:contacto@fundacioneda.org.ar" class="btn-donar-blanco">❤ Donar ahora</a>
       <a href="mailto:contacto@fundacioneda.org.ar" class="btn-donar-outline">Ser parte del proyecto</a>
@@ -1893,55 +252,27 @@ body {
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════
-     VISIÓN INSTITUCIONAL
-     Marino oscuro — cita centrada
-     ══════════════════════════════════ -->
 <section class="vision reveal">
   <div class="vision-inner">
     <div class="s-label" style="justify-content:center;">Nuestra visión</div>
-    <h2 class="s-title" style="font-size:clamp(2rem,3.2vw,2.8rem);">Lo que nos mueve</h2>
+    <h2 class="s-title" style="font-size:clamp(1.8rem,4vw,2.8rem);">Lo que nos mueve</h2>
     <blockquote class="vision-cita">
-      "Construir desde el territorio una institución moderna capaz de transformar
-      barrios históricos de Argentina mediante
-      <strong>cultura, educación, tecnología, medio ambiente, comunidad
-      y organización colectiva</strong>,
-      promoviendo modelos de integración y desarrollo social con proyección
-      nacional e internacional."
+      "Construir desde el territorio una institución moderna capaz de transformar barrios históricos de Argentina mediante <strong>cultura, educación, tecnología, medio ambiente, comunidad y organización colectiva</strong>, promoviendo modelos de integración y desarrollo social con proyección nacional e internacional."
     </blockquote>
     <a href="#donar" class="btn btn-celeste">Apoyar la Fundación</a>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════
-     FOOTER
-     4 columnas sobre fondo negro profundo
-     ══════════════════════════════════ -->
 <footer class="footer" id="contacto">
-
-  <div class="footer-grid">
-
-    <!-- Col 1: Marca + redes -->
-    <div>
-      <div class="footer-logo">
-        Fundación<br><em>Ejército de los Andes</em>
-      </div>
-      <p class="footer-desc">
-        Institución territorial del conurbano bonaerense orientada a la
-        transformación social, cultural, educativa y comunitaria.
-      </p>
-      <!-- Reemplazar # por URLs reales de redes -->
-      <div class="footer-social">
-        <a href="#" class="social-link" title="YouTube">YT</a>
-        <a href="#" class="social-link" title="Instagram">IG</a>
-        <a href="#" class="social-link" title="Facebook">FB</a>
-        <a href="#" class="social-link" title="Twitter/X">TW</a>
-      </div>
-    </div>
-
-    <!-- Col 2: La Fundación -->
+  <div class="footer-logo">Fundación<br><em>Ejército de los Andes</em></div>
+  <p class="footer-desc">Institución territorial del conurbano bonaerense orientada a la transformación social, cultural, educativa y comunitaria.</p>
+  <div class="footer-social">
+    <a href="#" class="social-link">YT</a>
+    <a href="#" class="social-link">IG</a>
+    <a href="#" class="social-link">FB</a>
+    <a href="#" class="social-link">TW</a>
+  </div>
+  <div class="footer-cols">
     <div>
       <div class="footer-col-titulo">La Fundación</div>
       <ul class="footer-links">
@@ -1949,144 +280,33 @@ body {
         <li><a href="#ejes">Ejes de acción</a></li>
         <li><a href="#proyecto">Proyecto Fuerte Apache</a></li>
         <li><a href="#casa">Casa EDA</a></li>
-        <li><a href="#">Visión y objetivos</a></li>
       </ul>
     </div>
-
-    <!-- Col 3: Audiovisual -->
     <div>
       <div class="footer-col-titulo">Audiovisual</div>
       <ul class="footer-links">
         <li><a href="#">Documentales</a></li>
         <li><a href="#">Streaming</a></li>
         <li><a href="#">Entrevistas</a></li>
-        <li><a href="#">Cobertura barrial</a></li>
         <li><a href="#">Canal YouTube</a></li>
       </ul>
     </div>
-
-    <!-- Col 4: Contacto — reemplazar con datos reales -->
     <div>
       <div class="footer-col-titulo">Contacto</div>
       <ul class="footer-links">
         <li><a href="mailto:contacto@fundacioneda.org.ar">contacto@fundacioneda.org.ar</a></li>
         <li><a href="#">Conurbano Bonaerense</a></li>
-        <li><a href="#">Fuerte Apache</a></li>
-        <li><a href="#">Ser parte</a></li>
         <li><a href="#donar">Donaciones</a></li>
+        <li><a href="#">Ser parte</a></li>
       </ul>
     </div>
-
   </div>
-
   <div class="footer-bottom">
     <span class="footer-copy">© 2024 Fundación Ejército de los Andes. Todos los derechos reservados.</span>
     <span class="footer-copy">Diseño · <a href="#">Tu Pyme Digital</a></span>
   </div>
-
 </footer>
 
-
-<!-- ══════════════════════════════════
-     JAVASCRIPT
-     1. Nav scroll → .is-scrolled
-     2. Video → pausa si prefers-reduced-motion
-     3. Scroll-reveal → IntersectionObserver
-     ══════════════════════════════════ -->
-<script>
-  // 1. Nav: fondo sólido al scrollear
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('is-scrolled', window.scrollY > 60);
-  }, { passive: true });
-
-  // 2. Video YouTube — no necesita JS, el iframe maneja autoplay/loop solo
-
-  // 3. Scroll-reveal: agrega .in-view cuando el elemento entra en pantalla
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in-view');
-          observer.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-  );
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // 4. SLIDER de actividades comunitarias
-  const track    = document.getElementById('sliderTrack');
-  const dotsWrap = document.getElementById('sliderDots');
-  const prevBtn  = document.getElementById('prevBtn');
-  const nextBtn  = document.getElementById('nextBtn');
-
-  if (track) {
-    const slides = track.querySelectorAll('.slide');
-    const total  = slides.length;
-    let current  = 0;
-    let autoTimer = null;
-
-    // Slides visibles según ancho
-    function perView() {
-      if (window.innerWidth <= 640)  return 1;
-      if (window.innerWidth <= 1024) return 2;
-      return 3;
-    }
-    function maxIndex() { return Math.max(0, total - perView()); }
-
-    // Generar dots
-    function buildDots() {
-      dotsWrap.innerHTML = '';
-      for (let i = 0; i <= maxIndex(); i++) {
-        const d = document.createElement('button');
-        d.className = 'dot' + (i === current ? ' active' : '');
-        d.setAttribute('aria-label', 'Slide ' + (i + 1));
-        d.addEventListener('click', () => { resetAuto(); goTo(i); });
-        dotsWrap.appendChild(d);
-      }
-    }
-
-    // Ir a slide
-    function goTo(index) {
-      current = Math.max(0, Math.min(index, maxIndex()));
-      track.style.transform = `translateX(-${(current / total) * 100}%)`;
-      dotsWrap.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current >= maxIndex();
-    }
-
-    function next() { goTo(current + 1); }
-    function prev() { goTo(current - 1); }
-
-    prevBtn.addEventListener('click', () => { resetAuto(); prev(); });
-    nextBtn.addEventListener('click', () => { resetAuto(); next(); });
-
-    // Auto-play
-    function startAuto() {
-      autoTimer = setInterval(() => goTo(current >= maxIndex() ? 0 : current + 1), 4000);
-    }
-    function resetAuto() { clearInterval(autoTimer); startAuto(); }
-
-    // Drag/swipe
-    let dragStart = 0;
-    track.addEventListener('mousedown',  e => { dragStart = e.clientX; });
-    track.addEventListener('touchstart', e => { dragStart = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('mouseup',    e => { const d = dragStart - e.clientX; if (Math.abs(d) > 50) { resetAuto(); d > 0 ? next() : prev(); } });
-    track.addEventListener('touchend',   e => { const d = dragStart - e.changedTouches[0].clientX; if (Math.abs(d) > 50) { resetAuto(); d > 0 ? next() : prev(); } });
-
-    // Pausa si prefers-reduced-motion
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) startAuto();
-
-    // Recalcular al resize
-    window.addEventListener('resize', () => { buildDots(); goTo(Math.min(current, maxIndex())); });
-
-    // Init
-    buildDots();
-    goTo(0);
-  }
-</script>
-
+<script src="main.js"></script>
 </body>
 </html>
