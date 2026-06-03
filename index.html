@@ -5,12 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fundación Ejército de los Andes — Conurbano Bonaerense</title>
   <meta name="description" content="Fundación territorial del conurbano bonaerense. Transformación social, cultural, educativa y audiovisual desde Fuerte Apache.">
-  <meta property="og:title" content="Fundación Ejército de los Andes">
-  <meta property="og:description" content="Institución territorial nacida en el conurbano bonaerense. Transformación social, educativa, cultural y audiovisual.">
-  <meta property="og:type" content="website">
-  <meta name="theme-color" content="#0a0f1e">
+  <meta name="theme-color" content="#070c1a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,7 +15,8 @@
 <!-- ── NAV ── -->
 <nav class="nav" id="nav" role="navigation" aria-label="Navegación principal">
   <a href="#inicio" class="nav-logo" aria-label="Inicio — Fundación Ejército de los Andes">
-    <span class="nav-logo-line1">Fundación</span><em class="nav-logo-line2">Ejército de los Andes</em>
+    <span class="nav-logo-line1">Fundación</span>
+    <span class="nav-logo-line2">Ejército de los Andes</span>
   </a>
   <ul class="nav-links" role="list">
     <li><a href="#nosotros">La Fundación</a></li>
@@ -43,17 +41,17 @@
   <a href="#donar" class="btn-rojo btn">❤ Donar ahora</a>
 </div>
 
-<!-- ── BOTÓN FLOTANTE DONAR (sticky lateral) ── -->
+<!-- ── BOTÓN FLOTANTE DONAR — IZQUIERDA ── -->
 <a href="#donar" class="floating-donar" aria-label="Donar a la Fundación">
   <span class="floating-donar-icon">❤</span>
   <span class="floating-donar-text">Donar</span>
 </a>
 
-<!-- ── BOTÓN FLOTANTE WHATSAPP ── -->
+<!-- ── BOTÓN FLOTANTE WHATSAPP — DERECHA ── -->
 <a href="https://wa.me/5491100000000?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20Fundaci%C3%B3n%20Ej%C3%A9rcito%20de%20los%20Andes"
    target="_blank" rel="noopener noreferrer"
    class="floating-whatsapp"
-   aria-label="Chatear por WhatsApp con un asistente">
+   aria-label="Chatear por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
@@ -70,14 +68,9 @@
 
 <!-- ── HERO ── -->
 <section class="hero" id="inicio" aria-label="Presentación de la Fundación">
-  <iframe class="hero-video"
-    src="https://www.youtube.com/embed/fRrEFt1HJ2M?autoplay=1&mute=1&loop=1&playlist=fRrEFt1HJ2M&controls=0&disablekb=1&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    aria-hidden="true"
-    title="Video de fondo"
-    loading="lazy"></iframe>
+  <img class="hero-bg-img" src="assets/img/hero-bg.png" alt="Comunidad de Fuerte Apache" loading="eager">
   <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-warm-tint" aria-hidden="true"></div>
   <div class="hero-grain" aria-hidden="true"></div>
 
   <div class="hero-content">
@@ -122,7 +115,7 @@
   </div>
 </section>
 
-<!-- ── TICKER ── -->
+<!-- ── TICKER EJES ── -->
 <div class="ticker" aria-hidden="true" role="marquee">
   <div class="ticker-track">
     <span class="ticker-item"><span>01</span> &nbsp; Comunicación Territorial</span>
@@ -141,6 +134,31 @@
     <span class="ticker-item"><span>06</span> &nbsp; Juventud y Cultura</span>
     <span class="ticker-item"><span>07</span> &nbsp; Relaciones Institucionales</span>
     <span class="ticker-item"><span>AV</span> &nbsp; Producción Audiovisual</span>
+  </div>
+</div>
+
+<!-- ── TICKER NOS ACOMPAÑAN ── -->
+<div class="ticker-aliados" aria-label="Nos acompañan" role="marquee">
+  <span class="ticker-aliados-label">Nos Acompañan</span>
+  <div class="ticker-aliados-wrap">
+    <div class="ticker-aliados-track">
+      <span class="ticker-aliados-item">Universidad Nacional de Morón<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Municipio de Ciudadela<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">UNICEF Argentina<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Secretaría de Cultura<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Red de Fundaciones Argentina<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Club Patria Ingenieros<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Parroquia San José<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Escuela Técnica N° 34<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Universidad Nacional de Morón<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Municipio de Ciudadela<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">UNICEF Argentina<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Secretaría de Cultura<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Red de Fundaciones Argentina<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Club Patria Ingenieros<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Parroquia San José<span class="sep">·</span></span>
+      <span class="ticker-aliados-item">Escuela Técnica N° 34<span class="sep">·</span></span>
+    </div>
   </div>
 </div>
 
@@ -164,6 +182,73 @@
   </div>
 </section>
 
+<!-- ── IMPACTO (contadores animados) ── -->
+<section class="impacto" id="impacto" aria-labelledby="impacto-titulo">
+  <div class="impacto-intro reveal">
+    <div class="s-label dark">Nuestro alcance</div>
+    <h2 class="s-title claro" id="impacto-titulo">Alentando<br><em>Grandeza</em></h2>
+  </div>
+  <div class="impacto-grid reveal reveal-d1">
+
+    <div class="impacto-item">
+      <div class="impacto-icono">
+        <!-- Ícono manos/comunidad -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 12 C24 12 18 18 18 26 C18 34 24 40 32 40 C40 40 46 34 46 26 C46 18 40 12 32 12Z" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 52 C10 44 20 38 32 38 C44 38 54 44 54 52" stroke-linecap="round"/>
+          <path d="M22 26 C22 26 26 30 32 30 C38 30 42 26 42 26" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="impacto-num" data-target="45000" data-suffix="">0</span>
+      <div class="impacto-linea"></div>
+      <span class="impacto-label">habitantes<br>en Fuerte Apache</span>
+    </div>
+
+    <div class="impacto-item">
+      <div class="impacto-icono">
+        <!-- Ícono programas/acciones -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="44" height="44" rx="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 32 L28 40 L44 24" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="impacto-num" data-target="7" data-suffix="">0</span>
+      <div class="impacto-linea"></div>
+      <span class="impacto-label">ejes de acción<br>en el territorio</span>
+    </div>
+
+    <div class="impacto-item">
+      <div class="impacto-icono">
+        <!-- Ícono niños/familias -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="20" r="8" stroke-linecap="round"/>
+          <circle cx="42" cy="20" r="8" stroke-linecap="round"/>
+          <path d="M6 52 C6 42 13 36 22 36" stroke-linecap="round"/>
+          <path d="M58 52 C58 42 51 36 42 36" stroke-linecap="round"/>
+          <path d="M22 36 C22 36 27 40 32 40 C37 40 42 36 42 36 C42 44 38 52 32 52 C26 52 22 44 22 36Z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="impacto-num" data-target="12000" data-suffix="+">0</span>
+      <div class="impacto-linea"></div>
+      <span class="impacto-label">personas<br>alcanzadas</span>
+    </div>
+
+    <div class="impacto-item">
+      <div class="impacto-icono">
+        <!-- Ícono barrios/territorio -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 8 C22 8 14 16 14 26 C14 40 32 56 32 56 C32 56 50 40 50 26 C50 16 42 8 32 8Z" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="32" cy="26" r="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="impacto-num" data-target="1" data-suffix="">0</span>
+      <div class="impacto-linea"></div>
+      <span class="impacto-label">proyecto<br>central activo</span>
+    </div>
+
+  </div>
+</section>
+
 <!-- ── PARALLAX BANNER ── -->
 <div class="parallax-banner" aria-hidden="true">
   <div class="parallax-overlay"></div>
@@ -181,7 +266,6 @@
     <p class="s-para claro" style="margin-top:.5rem;">Hacé click en cada eje para ver actividades y detalles.</p>
   </div>
   <div class="ejes-lista" role="list">
-
     <article class="eje-fila reveal" role="listitem" data-eje="01">
       <span class="eje-num" aria-hidden="true">01</span>
       <div class="eje-body">
@@ -190,7 +274,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
     <article class="eje-fila reveal" role="listitem" data-eje="02">
       <span class="eje-num" aria-hidden="true">02</span>
       <div class="eje-body">
@@ -199,7 +282,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
     <article class="eje-fila reveal" role="listitem" data-eje="03">
       <span class="eje-num" aria-hidden="true">03</span>
       <div class="eje-body">
@@ -208,7 +290,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
     <article class="eje-fila reveal" role="listitem" data-eje="04">
       <span class="eje-num" aria-hidden="true">04</span>
       <div class="eje-body">
@@ -217,7 +298,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
     <article class="eje-fila medio-ambiente reveal" role="listitem" data-eje="05">
       <span class="eje-num" aria-hidden="true">05</span>
       <div class="eje-body">
@@ -226,7 +306,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
     <article class="eje-fila reveal" role="listitem" data-eje="06">
       <span class="eje-num" aria-hidden="true">06</span>
       <div class="eje-body">
@@ -235,7 +314,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
     <article class="eje-fila reveal" role="listitem" data-eje="07">
       <span class="eje-num" aria-hidden="true">07</span>
       <div class="eje-body">
@@ -244,7 +322,6 @@
       </div>
       <span class="eje-ver" aria-hidden="true">Ver más →</span>
     </article>
-
   </div>
 </section>
 
@@ -313,23 +390,39 @@
 
 <!-- ── PROYECTO FUERTE APACHE ── -->
 <section class="proyecto" id="proyecto" aria-labelledby="proyecto-titulo">
+  <img class="proyecto-bg" src="assets/img/fuerte-apache-bg.png" alt="Barrio Ejército de los Andes — Fuerte Apache" loading="lazy">
+  <div class="proyecto-overlay" aria-hidden="true"></div>
+  <div class="proyecto-grain" aria-hidden="true"></div>
+  <div class="proyecto-scan" aria-hidden="true"></div>
+
   <div class="proyecto-inner">
     <div class="reveal">
       <div class="proyecto-eyebrow">Proyecto territorial principal</div>
       <h2 class="proyecto-titulo" id="proyecto-titulo">Proyecto<br><em>Fuerte</em><br>Apache</h2>
-    </div>
-    <div class="reveal reveal-d1">
-      <p class="s-para">Promover la transformación cultural, educativa y comunitaria del barrio Ejército de los Andes mediante iniciativas audiovisuales, sociales, institucionales y territoriales.</p>
-      <ul class="proyecto-lista">
+      <p class="s-para" style="margin-top:1rem;">Promover la transformación cultural, educativa y comunitaria del barrio Ejército de los Andes mediante iniciativas audiovisuales, sociales, institucionales y territoriales.</p>
+      <ul class="proyecto-lista" style="margin-top:1.25rem;">
         <li class="proyecto-item">Producción audiovisual comunitaria</li>
         <li class="proyecto-item">Representación e identidad territorial</li>
         <li class="proyecto-item">Mejora de oportunidades para la comunidad</li>
         <li class="proyecto-item">Integración social e institucional</li>
         <li class="proyecto-item">Formación en comunicación y tecnología</li>
       </ul>
-      <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-top:1.5rem;">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-top:1.75rem;">
         <a href="#donar" class="btn btn-celeste">Sumarse al proyecto</a>
         <span class="proyecto-badge">★ Eje Principal</span>
+      </div>
+    </div>
+
+    <div class="proyecto-foto-col reveal reveal-d2">
+      <div class="proyecto-foto-card">
+        <div class="proyecto-foto-stat">45k</div>
+        <div class="proyecto-foto-stat-label">Habitantes en el barrio</div>
+        <div class="proyecto-foto-divider"></div>
+        <div class="proyecto-foto-stat" style="font-size:2.2rem;">7</div>
+        <div class="proyecto-foto-stat-label">Ejes de acción activos</div>
+        <div class="proyecto-foto-divider"></div>
+        <div class="proyecto-foto-stat" style="font-size:2.2rem;">01</div>
+        <div class="proyecto-foto-stat-label">Proyecto central en curso</div>
       </div>
     </div>
   </div>
@@ -370,10 +463,14 @@
 
 <!-- ── CASA EDA ── -->
 <section class="casa" id="casa" aria-labelledby="casa-titulo">
+  <img class="casa-bg" src="assets/img/casa-eda-classroom.png" alt="Actividad en Casa EDA — niños en sala de aprendizaje" loading="lazy">
+  <div class="casa-overlay" aria-hidden="true"></div>
+  <div class="casa-overlay-bottom" aria-hidden="true"></div>
+
   <div class="casa-texto reveal">
     <div class="s-label">Espacio físico</div>
     <h2 class="s-title" id="casa-titulo">Casa<br>Ejército<br>de los Andes</h2>
-    <p class="s-para" style="margin-top:.75rem;">Espacio cultural, educativo, audiovisual, tecnológico y comunitario destinado a actividades formativas, producción audiovisual y proyectos sociales.</p>
+    <p class="s-para" style="margin-top:.75rem;color:rgba(244,242,238,0.65);">Espacio cultural, educativo, audiovisual, tecnológico y comunitario destinado a actividades formativas, producción audiovisual y proyectos sociales.</p>
     <div class="casa-pills" role="list">
       <span class="casa-pill" role="listitem">Cultural</span>
       <span class="casa-pill" role="listitem">Educativo</span>
@@ -383,8 +480,13 @@
     </div>
     <a href="#donar" class="btn btn-outline" style="margin-top:1.75rem;">Saber más</a>
   </div>
-  <div class="casa-visual reveal reveal-d2" aria-hidden="true">
-    <div class="casa-visual-texto">CASA<br>EDA</div>
+
+  <div class="casa-foto-lado reveal reveal-d2">
+    <div class="casa-foto-marco">
+      <img src="assets/img/casa-eda-classroom.png" alt="Niños trabajando en la Casa EDA" loading="lazy">
+      <div class="casa-foto-marco-overlay" aria-hidden="true"></div>
+      <span class="casa-foto-tag">Comunidad de Aprendizaje · Fuerte Apache</span>
+    </div>
   </div>
 </section>
 
@@ -398,34 +500,15 @@
       <p class="s-para" style="margin-top:.75rem;">Creemos en el poder transformador del compromiso voluntario. Si querés aportar tu tiempo, talento o energía al barrio, tenemos un lugar para vos.</p>
       <a href="mailto:contacto@fundacioneda.org.ar?subject=Quiero%20ser%20voluntario" class="btn btn-celeste" style="margin-top:1.75rem;">Quiero ser voluntario</a>
     </div>
-
     <div class="vol-roles reveal reveal-d1">
       <div class="s-label dark" style="margin-bottom:1.25rem;">Posibles roles</div>
       <ul class="vol-lista">
-        <li class="vol-item">
-          <span class="vol-icon">📡</span>
-          <div><strong>Comunicador/a territorial</strong><br><span>Cobertura de eventos, redes, fotografía y video comunitario.</span></div>
-        </li>
-        <li class="vol-item">
-          <span class="vol-icon">💻</span>
-          <div><strong>Voluntario/a digital</strong><br><span>Desarrollo web, diseño, IA y producción audiovisual.</span></div>
-        </li>
-        <li class="vol-item">
-          <span class="vol-icon">⚽</span>
-          <div><strong>Acompañante deportivo/a</strong><br><span>Organización y asistencia en actividades recreativas y deportivas.</span></div>
-        </li>
-        <li class="vol-item">
-          <span class="vol-icon">🌿</span>
-          <div><strong>Voluntario/a ambiental</strong><br><span>Reciclaje, forestación, recuperación de espacios verdes.</span></div>
-        </li>
-        <li class="vol-item">
-          <span class="vol-icon">🎨</span>
-          <div><strong>Artista comunitario/a</strong><br><span>Muralismo, expresión cultural, talleres para jóvenes.</span></div>
-        </li>
-        <li class="vol-item">
-          <span class="vol-icon">📚</span>
-          <div><strong>Educador/a y tutor/a</strong><br><span>Apoyo escolar, alfabetización digital, talleres formativos.</span></div>
-        </li>
+        <li class="vol-item"><span class="vol-icon">📡</span><div><strong>Comunicador/a territorial</strong><br><span>Cobertura de eventos, redes, fotografía y video comunitario.</span></div></li>
+        <li class="vol-item"><span class="vol-icon">💻</span><div><strong>Voluntario/a digital</strong><br><span>Desarrollo web, diseño, IA y producción audiovisual.</span></div></li>
+        <li class="vol-item"><span class="vol-icon">⚽</span><div><strong>Acompañante deportivo/a</strong><br><span>Organización y asistencia en actividades recreativas y deportivas.</span></div></li>
+        <li class="vol-item"><span class="vol-icon">🌿</span><div><strong>Voluntario/a ambiental</strong><br><span>Reciclaje, forestación, recuperación de espacios verdes.</span></div></li>
+        <li class="vol-item"><span class="vol-icon">🎨</span><div><strong>Artista comunitario/a</strong><br><span>Muralismo, expresión cultural, talleres para jóvenes.</span></div></li>
+        <li class="vol-item"><span class="vol-icon">📚</span><div><strong>Educador/a y tutor/a</strong><br><span>Apoyo escolar, alfabetización digital, talleres formativos.</span></div></li>
       </ul>
       <p class="vol-extra">…y mucho más. Contanos en qué podés aportar.</p>
     </div>
@@ -435,11 +518,38 @@
 <!-- ── DONACIONES ── -->
 <section class="donar reveal" id="donar" aria-labelledby="donar-titulo">
   <div class="donar-inner">
-    <div class="s-label" style="justify-content:center;color:rgba(255,255,255,0.5);">Apoyá la Fundación</div>
+    <div class="s-label" style="justify-content:center;color:rgba(244,242,238,0.45);">Apoyá la Fundación</div>
     <h2 class="donar-titulo" id="donar-titulo">Tu apoyo<br>transforma<br>el territorio</h2>
     <p class="donar-desc">Cada aporte nos permite seguir desarrollando programas educativos, culturales y audiovisuales en el barrio Ejército de los Andes.</p>
+    <div class="donar-montos" role="group" aria-label="Seleccionar monto de donación">
+      <button class="donar-monto-btn" data-monto="500">$500</button>
+      <button class="donar-monto-btn popular" data-monto="1000">$1.000</button>
+      <button class="donar-monto-btn popular" data-monto="2500">$2.500</button>
+      <button class="donar-monto-btn" data-monto="5000">$5.000</button>
+      <button class="donar-monto-btn" data-monto="10000">$10.000</button>
+    </div>
+    <div class="donar-monto-custom">
+      <span>$</span>
+      <input type="number" id="montoCustom" placeholder="Otro monto" min="1" aria-label="Ingresar monto personalizado">
+    </div>
+    <div class="donar-metodos" role="group" aria-label="Método de pago">
+      <button class="donar-metodo" id="btnMercadoPago" aria-label="Donar por Mercado Pago">
+        <span class="donar-metodo-icon">💳</span>
+        <div class="donar-metodo-info"><strong>Mercado Pago</strong><span>Link de pago seguro</span></div>
+      </button>
+      <button class="donar-metodo" id="btnTransferencia" aria-label="Donar por transferencia bancaria">
+        <span class="donar-metodo-icon">🏦</span>
+        <div class="donar-metodo-info"><strong>Transferencia</strong><span>CBU / Alias bancario</span></div>
+      </button>
+    </div>
+    <div class="donar-transferencia-datos" id="datosTransferencia" aria-live="polite">
+      <div class="donar-dato"><span class="donar-dato-label">Titular</span><span class="donar-dato-valor">Fundación Ejército de los Andes</span></div>
+      <div class="donar-dato"><span class="donar-dato-label">CBU</span><span class="donar-dato-valor">0000000000000000000000</span></div>
+      <div class="donar-dato"><span class="donar-dato-label">Alias</span><span class="donar-dato-valor">fundacion.eda</span></div>
+      <div class="donar-dato"><span class="donar-dato-label">CUIT</span><span class="donar-dato-valor">30-00000000-0</span></div>
+      <div class="donar-dato" style="border:none;"><span style="font-family:var(--ff-mono);font-size:0.6rem;color:rgba(244,242,238,0.35);letter-spacing:0.1em;">Enviá el comprobante a contacto@fundacioneda.org.ar</span></div>
+    </div>
     <div class="donar-btns">
-      <a href="mailto:contacto@fundacioneda.org.ar" class="btn-donar-blanco">❤ Donar ahora</a>
       <a href="mailto:contacto@fundacioneda.org.ar" class="btn-donar-outline">Ser parte del proyecto</a>
     </div>
   </div>
@@ -449,7 +559,7 @@
 <section class="vision reveal" aria-labelledby="vision-titulo">
   <div class="vision-inner">
     <div class="s-label" style="justify-content:center;">Nuestra visión</div>
-    <h2 class="s-title" style="font-size:clamp(1.8rem,4vw,2.8rem);" id="vision-titulo">Lo que nos mueve</h2>
+    <h2 class="s-title claro" style="font-size:clamp(1.8rem,4vw,2.8rem);" id="vision-titulo">Lo que nos mueve</h2>
     <blockquote class="vision-cita">
       "Construir desde el territorio una institución moderna capaz de transformar barrios históricos de Argentina mediante <strong>cultura, educación, tecnología, medio ambiente, comunidad y organización colectiva</strong>, promoviendo modelos de integración y desarrollo social con proyección nacional e internacional."
     </blockquote>

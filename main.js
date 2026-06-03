@@ -359,4 +359,78 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(s => activeObs.observe(s));
   }
 
+
+
+    /* ── 8. CONTADORES ANIMADOS (sección Impacto) ── */
+  const counters = document.querySelectorAll(".impacto-num[data-target]");
+  if (counters.length) {
+    function animateCounter(el) {
+      const target  = parseInt(el.dataset.target);
+      const suffix  = el.dataset.suffix || "";
+      const duration = 2000;
+      const start    = performance.now();
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+      function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.round(easeOut(progress) * target);
+        el.textContent = value.toLocaleString("es-AR") + (progress >= 1 ? suffix : "");
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    const counterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animateCounter(e.target); counterObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    counters.forEach(c => counterObs.observe(c));
+  }
+
+
+  /* ── 9. DONACIONES — MONTOS Y MÉTODOS ────────── */
+
+  // Selección de monto
+  const montoBtns = document.querySelectorAll('.donar-monto-btn');
+  const montoCustomInput = document.getElementById('montoCustom');
+  let montoSeleccionado = 1000;
+
+  function setMonto(monto) {
+    montoSeleccionado = monto;
+    montoBtns.forEach(b => b.classList.toggle('activo', parseInt(b.dataset.monto) === monto));
+    if (montoCustomInput) montoCustomInput.value = '';
+  }
+  montoBtns.forEach(btn => {
+    btn.addEventListener('click', () => setMonto(parseInt(btn.dataset.monto)));
+  });
+  if (montoCustomInput) {
+    montoCustomInput.addEventListener('input', () => {
+      montoBtns.forEach(b => b.classList.remove('activo'));
+      montoSeleccionado = parseInt(montoCustomInput.value) || 0;
+    });
+  }
+  // Activar monto default
+  setMonto(1000);
+
+  // Mercado Pago
+  const btnMP = document.getElementById('btnMercadoPago');
+  if (btnMP) {
+    btnMP.addEventListener('click', () => {
+      // Reemplazar con link real de Mercado Pago
+      const linkMP = `https://mpago.la/fundacion-eda?amount=${montoSeleccionado}`;
+      window.open(linkMP, '_blank', 'noopener');
+    });
+  }
+
+  // Transferencia: mostrar/ocultar datos
+  const btnTransf = document.getElementById('btnTransferencia');
+  const datosTransf = document.getElementById('datosTransferencia');
+  if (btnTransf && datosTransf) {
+    btnTransf.addEventListener('click', () => {
+      const visible = datosTransf.classList.toggle('visible');
+      btnTransf.style.borderColor = visible ? 'var(--ocre-vivo)' : '';
+    });
+  }
+
 });
+
